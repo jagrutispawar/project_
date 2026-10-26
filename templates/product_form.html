@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if product else 'Add' }} Product | Kirana Store{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">INVENTORY</p><h1>{{ 'Edit Product' if product else 'Add New Product' }}</h1><p class="muted">Enter product details below.</p></div><a class="btn light" href="{{ url_for('products') }}">← Back to Products</a></div>
+<section class="panel form-panel"><form method="post" class="product-form">
+<label>Product Name<input name="name" required maxlength="100" value="{{ product.name if product else '' }}" placeholder="e.g. Toor Dal 1 kg"></label>
+<label>Category<input name="category" maxlength="60" value="{{ product.category if product else '' }}" placeholder="e.g. Grains, Snacks, Oil"></label>
+<div class="form-row"><label>Price (₹)<input type="number" name="price" required min="0" step="0.01" value="{{ product.price if product else '' }}" placeholder="0.00"></label><label>Quantity in Stock<input type="number" name="quantity" required min="0" step="1" value="{{ product.quantity if product else '0' }}" placeholder="0"></label></div>
+<label>Low Stock Alert Limit<input type="number" name="low_stock_limit" required min="0" step="1" value="{{ product.low_stock_limit if product else '5' }}"></label>
+<div class="form-actions"><a class="btn light" href="{{ url_for('products') }}">Cancel</a><button class="btn primary" type="submit">{{ 'Save Changes' if product else 'Add Product' }}</button></div>
+</form></section>
+{% endblock %}

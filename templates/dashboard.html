@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Kirana Store{% endblock %}
+{% block content %}
+<div class="page-heading">
+ <div><p class="eyebrow">STORE OVERVIEW</p><h1>Good day, Store Owner 👋</h1><p class="muted">Here’s what’s happening in your shop today.</p></div>
+ <a class="btn primary" href="{{ url_for('add_product') }}">＋ Add Product</a>
+</div>
+<section class="stats">
+ <article class="stat"><div class="stat-top"><span>Total Products</span><span class="stat-icon purple">▦</span></div><strong>{{ product_count }}</strong><small>Products in inventory</small></article>
+ <article class="stat"><div class="stat-top"><span>Low Stock Items</span><span class="stat-icon orange">⚠</span></div><strong>{{ low_stock }}</strong><small>Need restocking</small></article>
+ <article class="stat"><div class="stat-top"><span>Today's Sales</span><span class="stat-icon green">₹</span></div><strong>₹{{ "%.2f"|format(today_sales) }}</strong><small>Recorded today</small></article>
+ <article class="stat"><div class="stat-top"><span>Inventory Value</span><span class="stat-icon blue">◈</span></div><strong>₹{{ "%.2f"|format(inventory_value) }}</strong><small>Current stock value</small></article>
+</section>
+<div class="two-col">
+ <section class="panel">
+  <div class="panel-heading"><div><h2>Low Stock Alert</h2><p class="muted">Items at or below their stock limit</p></div><a href="{{ url_for('products') }}">View all →</a></div>
+  {% if low_products %}<div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Status</th></tr></thead><tbody>
+  {% for p in low_products %}<tr><td class="product-name">{{ p.name }}</td><td>{{ p.category }}</td><td>{{ p.quantity }}</td><td><span class="pill warning">Low stock</span></td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<div class="empty">All products are sufficiently stocked. 🎉</div>{% endif %}
+ </section>
+ <section class="panel">
+  <div class="panel-heading"><div><h2>Recent Sales</h2><p class="muted">Latest recorded transactions</p></div><a href="{{ url_for('sales') }}">View all →</a></div>
+  {% if recent_sales %}<div class="sales-list">{% for s in recent_sales %}
+   <div class="sale-row"><div class="sale-avatar">₹</div><div class="sale-info"><strong>{{ s.product_name }}</strong><small>{{ s.quantity }} unit(s) · {{ s.sold_at }}</small></div><b>₹{{ "%.2f"|format(s.total) }}</b></div>
+  {% endfor %}</div>{% else %}<div class="empty">No sales recorded yet. Record your first sale.</div>{% endif %}
+ </section>
+</div>
+<section class="quick-actions"><h2>Quick Actions</h2><div class="action-grid">
+<a href="{{ url_for('add_product') }}"><span>＋</span><div><b>Add a Product</b><small>Add new stock to inventory</small></div><i>→</i></a>
+<a href="{{ url_for('sales') }}"><span>↗</span><div><b>Record a Sale</b><small>Sell items and update stock</small></div><i>→</i></a>
+<a href="{{ url_for('products') }}"><span>▤</span><div><b>Manage Inventory</b><small>Search, edit and remove items</small></div><i>→</i></a>
+</div></section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Sales | Kirana Store{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">CHECKOUT</p><h1>Sales Management</h1><p class="muted">Record a sale and stock will be reduced automatically.</p></div></div>
+<section class="panel sale-form-panel"><h2>Record New Sale</h2><form method="post" class="sale-form">
+<label>Choose Product<select name="product_id" required>{% for p in products %}<option value="{{ p.id }}">{{ p.name }} — ₹{{ "%.2f"|format(p.price) }} (Stock: {{ p.quantity }})</option>{% else %}<option value="">No products in stock</option>{% endfor %}</select></label>
+<label>Quantity<input name="quantity" type="number" min="1" step="1" required placeholder="Enter quantity"></label><button class="btn primary" type="submit" {% if not products %}disabled{% endif %}>Record Sale</button>
+</form></section>
+<section class="panel"><div class="panel-heading"><div><h2>Sales History</h2><p class="muted">Latest 100 transactions</p></div></div>
+<div class="table-wrap"><table><thead><tr><th>Sale ID</th><th>Product</th><th>Quantity</th><th>Unit Price</th><th>Total</th><th>Date & Time</th></tr></thead><tbody>
+{% for s in sales %}<tr><td>#{{ s.id }}</td><td class="product-name">{{ s.product_name }}</td><td>{{ s.quantity }}</td><td>₹{{ "%.2f"|format(s.unit_price) }}</td><td><b>₹{{ "%.2f"|format(s.total) }}</b></td><td>{{ s.sold_at }}</td></tr>{% else %}<tr><td colspan="6" class="empty">No sales have been recorded yet.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}
